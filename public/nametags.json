@@ -1,0 +1,24 @@
+{
+    "none": {
+        "displayName": "None"
+    },
+    "plain": {
+        "displayName": "Plain",
+        "resourceName": "hardhat.glb",
+        "scale": {
+            "x": 0.018,
+            "y": 0.015,
+            "z": 0.015
+        },
+        "rotation": {
+            "x": -5,
+            "y": 0,
+            "z": 0
+        },
+        "position": {
+            "x": 0,
+            "y": 0.06,
+            "z": -0.04
+        }
+    }
+}
