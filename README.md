@@ -1,4 +1,4 @@
-Displays a menu of hats that avatars can wear. Showcases avatar attachments.
+Displays a menu of name tags that avatars can wear. Showcases avatar attachments. Adapted from 'Wear a Hat'
 
 ## Editing
 

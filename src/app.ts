@@ -268,12 +268,19 @@ export default class NameTag {
 			}
 		}));
 */
-		// Create a label for the menu title.
+		// Create a label for the name tag
+		let height = 0.1;
+		// if name is 'too long', find a way to make it 'fit'
+		let theName = this.context.user(userId).name;
+		if (theName.length > 13)
+			theName = theName.substr(0, 13);
+		if (theName.length > 8)
+			height = height * (1.0 - (theName.length - 8) / 10.0);
 		this.attachedNameTags.set(userId, MRE.Actor.Create(this.context, {
 			actor: {
 				text: {
 					contents: this.context.user(userId).name,
-					height: 0.1,
+					height: height,
 					anchor: MRE.TextAnchorLocation.MiddleCenter,
 					color: col
 				},
