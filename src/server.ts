@@ -18,7 +18,8 @@ dotenv.config();
 
 // Start listening for connections, and serve static files
 const server = new WebHost({
-	// baseUrl: 'http://<ngrok-id>.ngrok.io',
+	//baseUrl: 'http://ceb70b69.ngrok.io',
+	baseUrl: 'https://altspace-name-tags.herokuapp.com',
 	baseDir: resolvePath(__dirname, '../public')
 });
 
