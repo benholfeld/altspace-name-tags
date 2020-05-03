@@ -120,7 +120,7 @@ export default class NameTag {
 		this.createFontButton (buttonMesh, menu, x, y, "Sans-Serif", MRE.TextFontFamily.SansSerif);
 		y = y + 0.5;
 
-		x = -1.0;
+		x = -0.5;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Near", 0.0);
 		x = x + 2.0;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Far", 0.1);
