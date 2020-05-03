@@ -128,16 +128,21 @@ export default class NameTag {
 		this.createDistanceButton (buttonMesh, menu, x, y, "Far", 0.1);
 		y = y + 0.5;
 
+		const yColors = y;
 		x = -1.5;
 		this.createColorButton (buttonMesh, menu, x, y, "Red", MRE.Color3.Red());
 		y = y + 0.5;
 		this.createColorButton (buttonMesh, menu, x, y, "Blue", MRE.Color3.Blue());
 		y = y + 0.5;
 		this.createColorButton (buttonMesh, menu, x, y, "Green", MRE.Color3.Green());
-		y = y + 0.5;
+
+		x = 1.0;
+		y = yColors;
 		this.createColorButton (buttonMesh, menu, x, y, "Black", MRE.Color3.Black());
 		y = y + 0.5;
 		this.createColorButton (buttonMesh, menu, x, y, "White", MRE.Color3.White());
+		y = y + 0.5;
+		this.createColorButton (buttonMesh, menu, x, y, "Yellow", MRE.Color3.Yellow());
 
 		/*
 		// Loop over the name tag database, creating a menu item for each entry.
