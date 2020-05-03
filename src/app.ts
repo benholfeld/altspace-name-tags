@@ -110,7 +110,7 @@ export default class NameTag {
 		// Create a parent object for all the menu items.
 		const menu = MRE.Actor.Create(this.context, {});
 		let y = 0.0;
-		let x = -1.5;
+		let x = -1.25;
 
 		// Create menu button
 		const buttonMesh = this.assets.createBoxMesh('button', 0.3, 0.3, 0.01);
@@ -120,16 +120,14 @@ export default class NameTag {
 		this.createFontButton (buttonMesh, menu, x, y, "Sans-Serif", MRE.TextFontFamily.SansSerif);
 		y = y + 0.5;
 
-		x = -1.5;
-		this.createDistanceButton (buttonMesh, menu, x, y, "Near", -0.1);
-		x = x + 2.0;
-		this.createDistanceButton (buttonMesh, menu, x, y, "Mid", 0.0);
+		x = -1.0;
+		this.createDistanceButton (buttonMesh, menu, x, y, "Near", 0.0);
 		x = x + 2.0;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Far", 0.1);
 		y = y + 0.5;
 
 		const yColors = y;
-		x = -1.5;
+		x = -1.25;
 		this.createColorButton (buttonMesh, menu, x, y, "Red", MRE.Color3.Red());
 		y = y + 0.5;
 		this.createColorButton (buttonMesh, menu, x, y, "Blue", MRE.Color3.Blue());
