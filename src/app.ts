@@ -77,7 +77,12 @@ export default class NameTag {
 	 * Called when a user leaves the application (probably left the Altspace world where this app is running).
 	 * @param user The user that left the building.
 	 */
-	private userJoined(user: MRE.User) {
+	private async userJoined(user: MRE.User) {
+		// Preload all the name tag models.
+		await new Promise(resolve => {
+			setTimeout(resolve, 1000)
+		});
+		//await this.preloadNameTags();
 		// Create default name tag
 		this.wearNameTag(MRE.Color3.White(), user.id);
 	}
@@ -98,7 +103,7 @@ export default class NameTag {
 	private showNameTagMenu() {
 		// Create a parent object for all the menu items.
 		const menu = MRE.Actor.Create(this.context, {});
-		let y = 0.3;
+		let y = 0.2;
 		const x = 0.0;
 
 		// Create menu button
@@ -150,7 +155,8 @@ export default class NameTag {
 			});
 			y = y + 0.5;
 		}
-*/
+		*/
+		/*
 		// Create a label for the menu title.
 		MRE.Actor.Create(this.context, {
 			actor: {
@@ -167,6 +173,24 @@ export default class NameTag {
 				}
 			}
 		});
+		*/
+		// Add background for menu
+		MRE.Actor.CreateFromPrefab(this.context, {
+			prefabId: this.prefabs["plain"].id,
+			actor: {
+				transform: {
+					local: {
+						position: { x: 1.0, y: 1.5, z: 0.01 },
+						rotation: MRE.Quaternion.FromEulerAngles(
+							90 * MRE.DegreesToRadians,
+							180 * MRE.DegreesToRadians,
+							0 * MRE.DegreesToRadians),
+						scale: { x: 2.0, y: 2.0, z: 2.0 }
+					}
+				}
+			}
+		});
+
 	}
 
 	private createColorButton(buttonMesh: MRE.Mesh, menu: MRE.Actor, x: double, y: double,
@@ -239,17 +263,18 @@ export default class NameTag {
 	private wearNameTag(/*nameTagId: string*/ col: MRE.Color3, userId: MRE.Guid) {
 		// If the user is wearing a name tag, destroy it.
 		this.removeNameTags(this.context.user(userId));
-		/*
+		const nameTagId = "plain";
 		const nameTagRecord = NameTagDatabase[nameTagId];
 
 		// If the user selected 'none', then early out.
 		if (!nameTagRecord.resourceName) {
 			return;
 		}
-*/
+
 		// Create the nametag model and attach it to the avatar's body.
-		/*		this.attachedNameTags.set(userId, MRE.Actor.CreateFromPrefab(this.context, {
-			prefabId: this.prefabs[nameTagId].id,
+		const prefabID = this.prefabs[nameTagId].id;
+		const newNameTagActor = MRE.Actor.CreateFromPrefab(this.context, {
+			prefabId: prefabID,
 			actor: {
 				transform: {
 					local: {
@@ -262,22 +287,24 @@ export default class NameTag {
 					}
 				},
 				attachment: {
-					attachPoint: 'head',
+					attachPoint: 'spine-top',
 					userId
 				}
 			}
-		}));
-*/
+		});
+
+	
 		// Create a label for the name tag
-		let height = 0.1;
+		let height = 1.0;
 		// if name is 'too long', find a way to make it 'fit'
 		let theName = this.context.user(userId).name;
-		if (theName.length > 13)
-			theName = theName.substr(0, 13);
-		if (theName.length > 8)
-			height = height * (1.0 - (theName.length - 8) / 10.0);
+		if (theName.length > 10)
+			{ theName = theName.substr(0, 10); }
+		if (theName.length > 4)
+			{ height = height * (1.0 - (theName.length - 4) / 10.0); }
 		this.attachedNameTags.set(userId, MRE.Actor.Create(this.context, {
 			actor: {
+				parentId: newNameTagActor.id,
 				text: {
 					contents: this.context.user(userId).name,
 					height: height,
@@ -286,19 +313,16 @@ export default class NameTag {
 				},
 				transform: {
 					local: {
-						position: { x: 0, y: 0, z: .15 },
+						position: { x: 0, y: 0.05, z: 0.25 },
 						rotation: MRE.Quaternion.FromEulerAngles(
+							90 * MRE.DegreesToRadians,
 							0 * MRE.DegreesToRadians,
-							180 * MRE.DegreesToRadians,
-							0 * MRE.DegreesToRadians),
+							180 * MRE.DegreesToRadians),
 					}
-				},
-				attachment: {
-					attachPoint: 'spine-top',
-					userId
 				}
 			}
 		}));
+		this.attachedNameTags.set(userId, newNameTagActor);
 	}
 
 	private removeNameTags(user: MRE.User) {
