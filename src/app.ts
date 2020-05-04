@@ -120,7 +120,7 @@ export default class NameTag {
 		this.createFontButton (buttonMesh, menu, x, y, "Sans-Serif", MRE.TextFontFamily.SansSerif);
 		y = y + 0.5;
 
-		x = -0.5;
+		x = -1.0;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Near", 0.0);
 		x = x + 2.0;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Far", 0.1);
@@ -180,24 +180,25 @@ export default class NameTag {
 			y = y + 0.5;
 		}
 		*/
-		/*
+	
 		// Create a label for the menu title.
 		MRE.Actor.Create(this.context, {
 			actor: {
 				parentId: menu.id,
 				name: 'label',
 				text: {
-					contents: ''.padStart(8, ' ') + "Name Tag",
-					height: 0.8,
+					contents: "Use selfie cam\n as a mirror",
+					height: 0.4,
 					anchor: MRE.TextAnchorLocation.MiddleCenter,
-					color: MRE.Color3.Blue()
+					justify: MRE.TextJustify.Center,
+					color: MRE.Color3.White()
 				},
 				transform: {
-					local: { position: { x: 0.5, y: y + 0.5, z: 0 } }
+					local: { position: { x: 1.0, y: y + 0.6, z: 0 } }
 				}
 			}
 		});
-		*/
+	
 		// Add background for menu
 		MRE.Actor.CreateFromPrefab(this.context, {
 			prefabId: this.prefabs["plain"].id,
