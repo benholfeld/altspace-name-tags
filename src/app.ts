@@ -122,7 +122,7 @@ export default class NameTag {
 
 		x = -1.0;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Human", 0.0);
-		x = x + 2.0;
+		x = x + 2.5;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Robot", 0.1);
 		y = y + 0.5;
 
