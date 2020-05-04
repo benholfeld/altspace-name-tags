@@ -121,9 +121,9 @@ export default class NameTag {
 		y = y + 0.5;
 
 		x = -1.0;
-		this.createDistanceButton (buttonMesh, menu, x, y, "Near", 0.0);
+		this.createDistanceButton (buttonMesh, menu, x, y, "Human", 0.0);
 		x = x + 2.0;
-		this.createDistanceButton (buttonMesh, menu, x, y, "Far", 0.1);
+		this.createDistanceButton (buttonMesh, menu, x, y, "Robot", 0.1);
 		y = y + 0.5;
 
 		const yColors = y;
