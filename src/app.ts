@@ -202,7 +202,7 @@ export default class NameTag {
 		
 		// Add background for menu
 		MRE.Actor.CreateFromPrefab(this.context, {
-			prefabId: this.prefabs["plain"].id,
+			prefabId: this.prefabs["menu-bkg"].id,
 			actor: {
 				transform: {
 					local: {
