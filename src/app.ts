@@ -5,6 +5,7 @@
 
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
 import { double } from '@microsoft/mixed-reality-extension-sdk/built/math/types';
+//import { runInThisContext } from 'vm';
 
 /**
  * The structure of a name tag entry in the name tag database.
@@ -49,6 +50,11 @@ export default class NameTag {
 	private prefabs: { [key: string]: MRE.Prefab } = {};
 	// Container for instantiated name tags.
 	private attachedNameTags = new Map<MRE.Guid, MRE.Actor>();
+	private tagColor: MRE.Color3 = MRE.Color3.White();
+	private tagDistance: double = 0.0; // 'mid'
+	private tagStickerId = "plain";
+	private tagFontFamily: MRE.TextFontFamily = MRE.TextFontFamily.SansSerif;
+	//private tagBackAlso: boolean = false;
 
 	/**
 	 * Constructs a new instance of this class.
@@ -84,7 +90,7 @@ export default class NameTag {
 		});
 		//await this.preloadNameTags();
 		// Create default name tag
-		this.wearNameTag(MRE.Color3.White(), user.id);
+		this.wearNameTag(user.id);
 	}
 
 	/**
@@ -103,21 +109,58 @@ export default class NameTag {
 	private showNameTagMenu() {
 		// Create a parent object for all the menu items.
 		const menu = MRE.Actor.Create(this.context, {});
-		let y = 0.2;
-		const x = 0.0;
+		let y = -0.30;
+		let x = -1.25;
+
+		// Create a label for the menu title.
+		MRE.Actor.Create(this.context, {
+			actor: {
+				parentId: menu.id,
+				name: 'label',
+				text: {
+					contents: "Use selfie cam as a mirror",
+					height: 0.25,
+					anchor: MRE.TextAnchorLocation.MiddleCenter,
+					justify: MRE.TextJustify.Center,
+					color: MRE.Color3.White()
+				},
+				transform: {
+					local: { position: { x: 1.0, y: y, z: 0 } }
+				}
+			}
+		});
+		y = y + 0.4;
 
 		// Create menu button
 		const buttonMesh = this.assets.createBoxMesh('button', 0.3, 0.3, 0.01);
 
+		this.createFontButton (buttonMesh, menu, x, y, "Serif", MRE.TextFontFamily.Serif);
+		x = x + 2.0;
+		this.createFontButton (buttonMesh, menu, x, y, "Sans-Serif", MRE.TextFontFamily.SansSerif);
+		y = y + 0.4;
+
+		x = -1.0;
+		this.createDistanceButton (buttonMesh, menu, x, y, "Human", 0.0);
+		x = x + 2.5;
+		this.createDistanceButton (buttonMesh, menu, x, y, "Robot", 0.1);
+		y = y + 0.4;
+
+		const yColors = y;
+		x = -1.25;
 		this.createColorButton (buttonMesh, menu, x, y, "Red", MRE.Color3.Red());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "Blue", MRE.Color3.Blue());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "Green", MRE.Color3.Green());
-		y = y + 0.5;
+
+		x = 1.0;
+		y = yColors;
 		this.createColorButton (buttonMesh, menu, x, y, "Black", MRE.Color3.Black());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "White", MRE.Color3.White());
+		y = y + 0.4;
+		this.createColorButton (buttonMesh, menu, x, y, "Yellow", MRE.Color3.Yellow());
+
 		/*
 		// Loop over the name tag database, creating a menu item for each entry.
 		for (const nameTagId of Object.keys(NameTagDatabase)) {
@@ -156,27 +199,10 @@ export default class NameTag {
 			y = y + 0.5;
 		}
 		*/
-		/*
-		// Create a label for the menu title.
-		MRE.Actor.Create(this.context, {
-			actor: {
-				parentId: menu.id,
-				name: 'label',
-				text: {
-					contents: ''.padStart(8, ' ') + "Name Tag",
-					height: 0.8,
-					anchor: MRE.TextAnchorLocation.MiddleCenter,
-					color: MRE.Color3.Blue()
-				},
-				transform: {
-					local: { position: { x: 0.5, y: y + 0.5, z: 0 } }
-				}
-			}
-		});
-		*/
+		
 		// Add background for menu
 		MRE.Actor.CreateFromPrefab(this.context, {
-			prefabId: this.prefabs["plain"].id,
+			prefabId: this.prefabs["menu-bkg"].id,
 			actor: {
 				transform: {
 					local: {
@@ -210,7 +236,7 @@ export default class NameTag {
 
 		// Set a click handler on the button.
 		button.setBehavior(MRE.ButtonBehavior)
-				.onClick(user => this.wearNameTag(col, user.id));
+				.onClick(user => { this.tagColor = col; this.wearNameTag(user.id); });
 
 		// Create a label for the menu entry.
 		MRE.Actor.Create(this.context, {
@@ -219,12 +245,93 @@ export default class NameTag {
 				name: 'label',
 				text: {
 					contents: colorName,
-					height: 0.5,
+					height: 0.4,
 					color: col,
 					anchor: MRE.TextAnchorLocation.MiddleLeft
 				},
 				transform: {
-					local: { position: { x: x + 0.5, y, z: 0 } }
+					local: { position: { x: x + 0.25, y, z: 0 } }
+				}
+			}
+		});
+	}
+
+	///
+	/// TODO: Make generic 'create button' which takes the 'set' function as a param, rather than all this dup code
+	///
+	private createDistanceButton (buttonMesh: MRE.Mesh, menu: MRE.Actor, x: double, y: double,
+		labelText: string, distance: double) {
+		// Create a clickable button.
+		const button = MRE.Actor.Create(this.context, {
+			actor: {
+				parentId: menu.id,
+				name: labelText,
+				appearance: { meshId: buttonMesh.id },
+				collider: { geometry: { shape: MRE.ColliderType.Auto } },
+				transform: {
+					local: { position: { x, y, z: 0 } }
+				}
+			}
+		});
+
+		// Set a click handler on the button.
+		button.setBehavior(MRE.ButtonBehavior)
+				.onClick(user => { this.tagDistance = distance; this.wearNameTag(user.id); });
+
+		// Create a label for the menu entry.
+		MRE.Actor.Create(this.context, {
+			actor: {
+				parentId: menu.id,
+				name: 'label',
+				text: {
+					contents: labelText,
+					height: 0.4,
+					color: MRE.Color3.Black(),
+					anchor: MRE.TextAnchorLocation.MiddleLeft
+				},
+				transform: {
+					local: { position: { x: x + 0.25, y, z: 0 } }
+				}
+			}
+		});
+	}
+
+	///
+	/// TODO: Make generic 'create button' which takes the 'set' function as a param, rather than all this dup code
+	///
+	private createFontButton (buttonMesh: MRE.Mesh, menu: MRE.Actor, x: double, y: double,
+		labelText: string, fontFam: MRE.TextFontFamily) {
+		// Create a clickable button.
+		const button = MRE.Actor.Create(this.context, {
+			actor: {
+				parentId: menu.id,
+				name: labelText,
+				appearance: { meshId: buttonMesh.id },
+				collider: { geometry: { shape: MRE.ColliderType.Auto } },
+				transform: {
+					local: { position: { x, y, z: 0 } }
+				}
+			}
+		});
+
+		// Set a click handler on the button.
+		button.setBehavior(MRE.ButtonBehavior)
+				.onClick(user => { this.tagFontFamily = fontFam; this.wearNameTag(user.id); });
+
+		// Create a label for the menu entry.
+		MRE.Actor.Create(this.context, {
+			actor: {
+				parentId: menu.id,
+				name: 'label',
+				text: {
+					contents: labelText,
+					height: 0.4,
+					color: MRE.Color3.Black(),
+					anchor: MRE.TextAnchorLocation.MiddleLeft,
+					font: fontFam
+				},
+				transform: {
+					local: { position: { x: x + 0.25, y, z: 0 } }
 				}
 			}
 		});
@@ -260,11 +367,11 @@ export default class NameTag {
 	 * @param nameTagId The id of nametag in the nametag database.
 	 * @param userId The id of the user we will attach the nametag to.
 	 */
-	private wearNameTag(/*nameTagId: string*/ col: MRE.Color3, userId: MRE.Guid) {
+	private wearNameTag(/*nameTagId: string*/ /* col: MRE.Color3,*/ userId: MRE.Guid) {
 		// If the user is wearing a name tag, destroy it.
 		this.removeNameTags(this.context.user(userId));
-		const nameTagId = "plain";
-		const nameTagRecord = NameTagDatabase[nameTagId];
+		//const nameTagId = "plain";
+		const nameTagRecord = NameTagDatabase[this.tagStickerId];
 
 		// If the user selected 'none', then early out.
 		if (!nameTagRecord.resourceName) {
@@ -272,13 +379,16 @@ export default class NameTag {
 		}
 
 		// Create the nametag model and attach it to the avatar's body.
-		const prefabID = this.prefabs[nameTagId].id;
+		const prefabID = this.prefabs[this.tagStickerId].id;
+		const p = nameTagRecord.position;
+		const pos: MRE.Vector3 = new MRE.Vector3(p.x, p.y, p.z);
+		pos.z = nameTagRecord.position.z + this.tagDistance;
 		const newNameTagActor = MRE.Actor.CreateFromPrefab(this.context, {
 			prefabId: prefabID,
 			actor: {
 				transform: {
 					local: {
-						position: nameTagRecord.position,
+						position: pos,
 						rotation: MRE.Quaternion.FromEulerAngles(
 							nameTagRecord.rotation.x * MRE.DegreesToRadians,
 							nameTagRecord.rotation.y * MRE.DegreesToRadians,
@@ -298,10 +408,12 @@ export default class NameTag {
 		let height = 1.0;
 		// if name is 'too long', find a way to make it 'fit'
 		let theName = this.context.user(userId).name;
-		if (theName.length > 10)
-			{ theName = theName.substr(0, 10); }
-		if (theName.length > 4)
-			{ height = height * (1.0 - (theName.length - 4) / 10.0); }
+		if (theName.length > 10) {
+			theName = theName.substr(0, 10);
+		}
+		if (theName.length > 4) {
+			height = height * (1.0 - (theName.length - 4) / 10.0);
+		}
 		this.attachedNameTags.set(userId, MRE.Actor.Create(this.context, {
 			actor: {
 				parentId: newNameTagActor.id,
@@ -309,11 +421,12 @@ export default class NameTag {
 					contents: this.context.user(userId).name,
 					height: height,
 					anchor: MRE.TextAnchorLocation.MiddleCenter,
-					color: col
+					color: this.tagColor,
+					font: this.tagFontFamily
 				},
 				transform: {
 					local: {
-						position: { x: 0, y: 0.05, z: 0.25 },
+						position: { x: 0, y: 0.05, z: 0.1 },
 						rotation: MRE.Quaternion.FromEulerAngles(
 							90 * MRE.DegreesToRadians,
 							0 * MRE.DegreesToRadians,

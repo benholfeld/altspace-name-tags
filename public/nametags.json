@@ -2,6 +2,10 @@
     "none": {
         "displayName": "None"
     },
+    "menu-bkg": {
+        "displayName": "None",
+        "resourceName": "NameTagMenuBkg.glb"
+    },
     "plain": {
         "displayName": "Plain",
         "resourceName": "NameTag1.glb",
