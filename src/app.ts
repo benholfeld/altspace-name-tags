@@ -109,8 +109,27 @@ export default class NameTag {
 	private showNameTagMenu() {
 		// Create a parent object for all the menu items.
 		const menu = MRE.Actor.Create(this.context, {});
-		let y = 0.0;
+		let y = -0.30;
 		let x = -1.25;
+
+		// Create a label for the menu title.
+		MRE.Actor.Create(this.context, {
+			actor: {
+				parentId: menu.id,
+				name: 'label',
+				text: {
+					contents: "Use selfie cam as a mirror",
+					height: 0.25,
+					anchor: MRE.TextAnchorLocation.MiddleCenter,
+					justify: MRE.TextJustify.Center,
+					color: MRE.Color3.White()
+				},
+				transform: {
+					local: { position: { x: 1.0, y: y, z: 0 } }
+				}
+			}
+		});
+		y = y + 0.4;
 
 		// Create menu button
 		const buttonMesh = this.assets.createBoxMesh('button', 0.3, 0.3, 0.01);
@@ -118,28 +137,28 @@ export default class NameTag {
 		this.createFontButton (buttonMesh, menu, x, y, "Serif", MRE.TextFontFamily.Serif);
 		x = x + 2.0;
 		this.createFontButton (buttonMesh, menu, x, y, "Sans-Serif", MRE.TextFontFamily.SansSerif);
-		y = y + 0.5;
+		y = y + 0.4;
 
 		x = -1.0;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Human", 0.0);
 		x = x + 2.5;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Robot", 0.1);
-		y = y + 0.5;
+		y = y + 0.4;
 
 		const yColors = y;
 		x = -1.25;
 		this.createColorButton (buttonMesh, menu, x, y, "Red", MRE.Color3.Red());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "Blue", MRE.Color3.Blue());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "Green", MRE.Color3.Green());
 
 		x = 1.0;
 		y = yColors;
 		this.createColorButton (buttonMesh, menu, x, y, "Black", MRE.Color3.Black());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "White", MRE.Color3.White());
-		y = y + 0.5;
+		y = y + 0.4;
 		this.createColorButton (buttonMesh, menu, x, y, "Yellow", MRE.Color3.Yellow());
 
 		/*
@@ -180,25 +199,7 @@ export default class NameTag {
 			y = y + 0.5;
 		}
 		*/
-	
-		// Create a label for the menu title.
-		MRE.Actor.Create(this.context, {
-			actor: {
-				parentId: menu.id,
-				name: 'label',
-				text: {
-					contents: "Use selfie cam\n as a mirror",
-					height: 0.4,
-					anchor: MRE.TextAnchorLocation.MiddleCenter,
-					justify: MRE.TextJustify.Center,
-					color: MRE.Color3.White()
-				},
-				transform: {
-					local: { position: { x: 1.0, y: y + 0.6, z: 0 } }
-				}
-			}
-		});
-	
+		
 		// Add background for menu
 		MRE.Actor.CreateFromPrefab(this.context, {
 			prefabId: this.prefabs["plain"].id,
@@ -244,7 +245,7 @@ export default class NameTag {
 				name: 'label',
 				text: {
 					contents: colorName,
-					height: 0.5,
+					height: 0.4,
 					color: col,
 					anchor: MRE.TextAnchorLocation.MiddleLeft
 				},
@@ -284,7 +285,7 @@ export default class NameTag {
 				name: 'label',
 				text: {
 					contents: labelText,
-					height: 0.5,
+					height: 0.4,
 					color: MRE.Color3.Black(),
 					anchor: MRE.TextAnchorLocation.MiddleLeft
 				},
@@ -324,7 +325,7 @@ export default class NameTag {
 				name: 'label',
 				text: {
 					contents: labelText,
-					height: 0.5,
+					height: 0.4,
 					color: MRE.Color3.Black(),
 					anchor: MRE.TextAnchorLocation.MiddleLeft,
 					font: fontFam
