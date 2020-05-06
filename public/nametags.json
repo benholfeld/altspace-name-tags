@@ -9,6 +9,11 @@
     "plain": {
         "displayName": "Plain",
         "resourceName": "NameTag1.glb",
+        "label_position": {
+            "x": 0,
+            "y": 0,
+            "z": 0.3
+        },
         "scale": {
             "x": 0.1,
             "y": 0.1,

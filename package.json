@@ -28,15 +28,15 @@
     "debug": "node --nolazy --inspect-brk=9229 ."
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.17.0",
-    "@typescript-eslint/parser": "^2.17.0",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
     "eslint": "^6.8.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@microsoft/mixed-reality-extension-sdk": "^0.16.1",
-    "@types/dotenv": "^6.1.0",
-    "@types/node": "^10.3.1",
+    "@microsoft/mixed-reality-extension-sdk": "^0.17.1",
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^10.17.21",
     "dotenv": "^6.2.0"
   }
 }

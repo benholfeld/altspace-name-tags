@@ -4,7 +4,7 @@
  */
 
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
-import { double } from '@microsoft/mixed-reality-extension-sdk/built/math/types';
+//import { number } from '@microsoft/mixed-reality-extension-sdk/built/math/types';
 //import { runInThisContext } from 'vm';
 
 /**
@@ -13,6 +13,11 @@ import { double } from '@microsoft/mixed-reality-extension-sdk/built/math/types'
 type NameTagDescriptor = {
 	displayName: string;
 	resourceName: string;
+	label_position: {
+		x: number;
+		y: number;
+		z: number;
+	};
 	scale: {
 		x: number;
 		y: number;
@@ -51,7 +56,7 @@ export default class NameTag {
 	// Container for instantiated name tags.
 	private attachedNameTags = new Map<MRE.Guid, MRE.Actor>();
 	private tagColor: MRE.Color3 = MRE.Color3.White();
-	private tagDistance: double = 0.0; // 'mid'
+	private tagDistance = 0.0; // 'mid'
 	private tagStickerId = "plain";
 	private tagFontFamily: MRE.TextFontFamily = MRE.TextFontFamily.SansSerif;
 	//private tagBackAlso: boolean = false;
@@ -219,7 +224,7 @@ export default class NameTag {
 
 	}
 
-	private createColorButton(buttonMesh: MRE.Mesh, menu: MRE.Actor, x: double, y: double,
+	private createColorButton(buttonMesh: MRE.Mesh, menu: MRE.Actor, x: number, y: number,
 		colorName: string, col: MRE.Color3) {
 		// Create a clickable button.
 		const button = MRE.Actor.Create(this.context, {
@@ -259,8 +264,8 @@ export default class NameTag {
 	///
 	/// TODO: Make generic 'create button' which takes the 'set' function as a param, rather than all this dup code
 	///
-	private createDistanceButton (buttonMesh: MRE.Mesh, menu: MRE.Actor, x: double, y: double,
-		labelText: string, distance: double) {
+	private createDistanceButton (buttonMesh: MRE.Mesh, menu: MRE.Actor, x: number, y: number,
+		labelText: string, distance: number) {
 		// Create a clickable button.
 		const button = MRE.Actor.Create(this.context, {
 			actor: {
@@ -299,7 +304,7 @@ export default class NameTag {
 	///
 	/// TODO: Make generic 'create button' which takes the 'set' function as a param, rather than all this dup code
 	///
-	private createFontButton (buttonMesh: MRE.Mesh, menu: MRE.Actor, x: double, y: double,
+	private createFontButton (buttonMesh: MRE.Mesh, menu: MRE.Actor, x: number, y: number,
 		labelText: string, fontFam: MRE.TextFontFamily) {
 		// Create a clickable button.
 		const button = MRE.Actor.Create(this.context, {
@@ -426,7 +431,7 @@ export default class NameTag {
 				},
 				transform: {
 					local: {
-						position: { x: 0, y: 0.05, z: 0.1 },
+						position: nameTagRecord.label_position,
 						rotation: MRE.Quaternion.FromEulerAngles(
 							90 * MRE.DegreesToRadians,
 							0 * MRE.DegreesToRadians,
