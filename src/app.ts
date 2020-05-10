@@ -56,7 +56,7 @@ export default class NameTag {
 	// Container for instantiated name tags.
 	private attachedNameTags = new Map<MRE.Guid, MRE.Actor>();
 	private tagColor: MRE.Color3 = MRE.Color3.White();
-	private tagDistance = 0.0; // 'mid'
+	private tagDistance = 0.01; // 'mid'
 	private tagStickerId = "plain";
 	private tagFontFamily: MRE.TextFontFamily = MRE.TextFontFamily.SansSerif;
 	//private tagBackAlso: boolean = false;
@@ -82,6 +82,15 @@ export default class NameTag {
 		await this.preloadNameTags();
 		// Show the name tag menu.
 		this.showNameTagMenu();
+
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-165977010-1', 'auto');
+	ga('send', 'pageview');
 	}
 
 	/**
