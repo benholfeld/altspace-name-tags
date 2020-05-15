@@ -83,6 +83,18 @@ export default class NameTag {
 		// Show the name tag menu.
 		this.showNameTagMenu();
 
+		import * as request from "request-promise-native";
+
+(async () => {
+  const baseUrl = 'https://labs.accenture.com/test11111';
+  const queryString = '?test=test';
+  var options = {
+      uri: baseUrl + queryString,
+  };
+
+  const result = await request.get(options);
+})()
+
 /** 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
