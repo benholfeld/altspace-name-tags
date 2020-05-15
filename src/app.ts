@@ -83,7 +83,7 @@ export default class NameTag {
 		// Show the name tag menu.
 		this.showNameTagMenu();
 
-		import * as request from "request-promise-native";
+		//import * as request from "request-promise-native";
 
 (async () => {
   const baseUrl = 'https://labs.accenture.com/test11111';
@@ -167,7 +167,7 @@ export default class NameTag {
 		y = y + 0.4;
 
 		x = -1.0;
-		this.createDistanceButton (buttonMesh, menu, x, y, "Human", 0.0);
+		this.createDistanceButton (buttonMesh, menu, x, y, "Human2", 0.0);
 		x = x + 2.5;
 		this.createDistanceButton (buttonMesh, menu, x, y, "Robot", 0.1);
 		y = y + 0.4;
