@@ -4,6 +4,8 @@
  */
 
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
+//import axios from 'axios';
+import { axios } from 'https://unpkg.com/axios/dist/axios.min.js'; 
 //import * as request from "request-promise-native";
 //import { number } from '@microsoft/mixed-reality-extension-sdk/built/math/types';
 //import { runInThisContext } from 'vm';
@@ -56,7 +58,7 @@ export default class NameTag {
 	private prefabs: { [key: string]: MRE.Prefab } = {};
 	// Container for instantiated name tags.
 	private attachedNameTags = new Map<MRE.Guid, MRE.Actor>();
-	private tagColor: MRE.Color3 = MRE.Color3.White();
+	private tagColor: MRE.Color3 = MRE.Color3.Black();
 	private tagDistance = 0.01; // 'mid'
 	private tagStickerId = "plain";
 	private tagFontFamily: MRE.TextFontFamily = MRE.TextFontFamily.SansSerif;
@@ -84,11 +86,19 @@ export default class NameTag {
 		// Show the name tag menu.
 		this.showNameTagMenu();
 
+
+
 		const url2='https://labs.accenture.com/test11111?test=test';
+		axios.get(url2);		
+/**
+ * 
+ * 		// Create new script element
+const script = document.createElement('script');
+script.src = '/path/to/js/file.js';
 
+// Append to the `head` element
+document.head.appendChild(script);
 
-/**		axios.get(url2);
-		
 
 		const Http = new XMLHttpRequest();
 		const url='https://labs.accenture.com/test11111?test=test';
@@ -109,7 +119,7 @@ export default class NameTag {
   const result = await request.get(options);
 })() 
 
- */
+ 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -117,7 +127,7 @@ export default class NameTag {
 	
 	ga('create', 'UA-165977010-1', 'auto');
 	ga('send', 'pageview');
-	
+	*/
 }
 
 	/**

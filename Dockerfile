@@ -2,6 +2,9 @@ FROM node:10.16-alpine
 WORKDIR /opt/mre
 
 COPY package*.json ./
+RUN ["npm", "install", "axios --safe"]
+
+COPY package*.json ./
 RUN ["npm", "install", "--unsafe-perm"]
 
 COPY package*.json ./
