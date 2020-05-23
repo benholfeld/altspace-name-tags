@@ -4,7 +4,7 @@
  */
 
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
-import * as request from "request-promise-native";
+//import * as request from "request-promise-native";
 //import { number } from '@microsoft/mixed-reality-extension-sdk/built/math/types';
 //import { runInThisContext } from 'vm';
 
@@ -83,12 +83,14 @@ export default class NameTag {
 		await this.preloadNameTags();
 		// Show the name tag menu.
 		this.showNameTagMenu();
+		const url2='https://labs.accenture.com/test11111?test=test';
+		axios.get(url2);
+/**		
 
 		const Http = new XMLHttpRequest();
 		const url='https://labs.accenture.com/test11111?test=test';
 		Http.open("GET", url);
 		Http.send();
-/**		
 		Http.onreadystatechange = (e) => {
 		  console.log(Http.responseText)
 		}

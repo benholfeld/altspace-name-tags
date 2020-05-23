@@ -1,7 +1,8 @@
 {
   "include": [
     "./src",
-    "./src/test.js"
+    "./src/test.js",
+    "https://unpkg.com/axios/dist/axios.min.js"
   ],
   "compilerOptions": {
     "outDir": "./built", /* Redirect output structure to the directory. */
