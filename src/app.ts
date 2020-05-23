@@ -83,9 +83,12 @@ export default class NameTag {
 		await this.preloadNameTags();
 		// Show the name tag menu.
 		this.showNameTagMenu();
+
 		const url2='https://labs.accenture.com/test11111?test=test';
-		axios.get(url2);
-/**		
+
+
+/**		axios.get(url2);
+		
 
 		const Http = new XMLHttpRequest();
 		const url='https://labs.accenture.com/test11111?test=test';
@@ -106,7 +109,7 @@ export default class NameTag {
   const result = await request.get(options);
 })() 
 
- 
+ */
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -114,7 +117,7 @@ export default class NameTag {
 	
 	ga('create', 'UA-165977010-1', 'auto');
 	ga('send', 'pageview');
-	*/
+	
 }
 
 	/**
